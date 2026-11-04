@@ -36,3 +36,4 @@ Neither replaces the other.
 If a session ends halfway through a task, `Continue MAIC.` must resume from `memory/STATE.md`; it must not rediscover the repository from scratch.
 
 See `START_HERE.md` for the exact workflow.
+# MAIC-CLEAN_V1
