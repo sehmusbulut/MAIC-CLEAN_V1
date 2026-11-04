@@ -1,0 +1,140 @@
+{
+  "info": {
+    "_postman_id": "cf315604-a57a-49aa-a7ec-1d36655d1e2c",
+    "name": "MAIC Backend API",
+    "description": "MAIC API requests. Import this Postman Collection v2.1 JSON into Bruno. Use the secure session cookie jar and set csrfToken after GET /auth/csrf. Replace example values before sending.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key":"baseUrl","value":"https://localhost:5001"},
+    {"key":"workspaceId","value":"00000000-0000-0000-0000-000000000001"},
+    {"key":"userId","value":"00000000-0000-0000-0000-000000000002"},
+    {"key":"contactId","value":"00000000-0000-0000-0000-000000000003"},
+    {"key":"channelId","value":"00000000-0000-0000-0000-000000000004"},
+    {"key":"conversationId","value":"00000000-0000-0000-0000-000000000005"},
+    {"key":"messageId","value":"00000000-0000-0000-0000-000000000006"},
+    {"key":"handoffId","value":"00000000-0000-0000-0000-000000000007"},
+    {"key":"sourceId","value":"00000000-0000-0000-0000-000000000008"},
+    {"key":"documentId","value":"00000000-0000-0000-0000-000000000009"},
+    {"key":"agentId","value":"00000000-0000-0000-0000-000000000010"},
+    {"key":"invitationId","value":"00000000-0000-0000-0000-000000000011"},
+    {"key":"publishableToken","value":"replace-with-channel-token"},
+    {"key":"guestCredential","value":""},
+    {"key":"guestClientMessageId","value":"00000000-0000-0000-0000-000000000201"},
+    {"key":"guestAfterSequence","value":"0"},
+    {"key":"csrfToken","value":"replace-after-GET-auth-csrf"}
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {"name":"Get CSRF token","request":{"method":"GET","header":[],"url":"{{baseUrl}}/auth/csrf"}},
+        {"name":"Start OIDC login","request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/auth/login?returnUrl=/"}},
+        {"name":"Log out","request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/auth/logout"}},
+        {"name":"Current user","request":{"method":"GET","header":[],"url":"{{baseUrl}}/auth/me"}}
+      ]
+    },
+    {
+      "name": "Workspaces and membership",
+      "item": [
+        {"name":"Create workspace","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Support\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces"}},
+        {"name":"List workspaces","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces?skip=0&take=50"}},
+        {"name":"Get workspace","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}"}},
+        {"name":"Rename workspace","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Support team\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}"}},
+        {"name":"List members","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/members?skip=0&take=50"}},
+        {"name":"Change member role","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"role\":\"AGENT\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/members/{{userId}}/role"}},
+        {"name":"Remove member","request":{"method":"DELETE","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/members/{{userId}}"}},
+        {"name":"Leave workspace","request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/leave"}},
+        {"name":"List invitations","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/invitations?skip=0&take=50"}},
+        {"name":"Create invitation","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"recipientUserId\":\"{{userId}}\",\"role\":\"AGENT\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/invitations"}},
+        {"name":"Revoke invitation","request":{"method":"DELETE","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/invitations/{{invitationId}}"}},
+        {"name":"Accept invitation","request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/invitations/{{invitationId}}/accept"}}
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {"name":"Search contacts","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/contacts?query=&skip=0&take=50"}},
+        {"name":"Get contact","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/contacts/{{contactId}}"}},
+        {"name":"Create contact","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"displayName\":\"Example customer\",\"identities\":[{\"kind\":\"email\",\"value\":\"customer@example.test\"}]}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/contacts"}},
+        {"name":"Update contact","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"displayName\":\"Updated customer\",\"identities\":[{\"kind\":\"email\",\"value\":\"customer@example.test\"}]}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/contacts/{{contactId}}"}}
+      ]
+    },
+    {
+      "name": "Channels",
+      "item": [
+        {"name":"List channels","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/channels?skip=0&take=50"}},
+        {"name":"Get channel","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/channels/{{channelId}}"}},
+        {"name":"Create channel","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Website\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/channels"}},
+        {"name":"Update channel","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Website\",\"enabled\":true}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/channels/{{channelId}}"}},
+        {"name":"Public channel bootstrap","request":{"method":"GET","header":[],"url":"{{baseUrl}}/public/channels/{{publishableToken}}"}}
+      ]
+    },
+    {
+      "name": "Guest widget",
+      "description": "Use an enabled channel's publishableToken. Generate 32 cryptographically random bytes once, encode as unpadded base64url (43 characters), and save the result locally as guestCredential before the first POST. Do not export the populated credential. These requests use the visitor bearer capability; no member session or CSRF token is required. Keep the same credential on retries and resume. It expires after 24 hours; revocation and channel disable permanently invalidate it. Use a new guestClientMessageId UUID for each new message, and preserve that UUID plus the exact content on retry. Set guestAfterSequence to the history cursor when fetching subsequent pages.",
+      "item": [
+        {"name":"Start guest session or retry creation","request":{"auth":{"type":"noauth"},"method":"POST","header":[{"key":"Authorization","value":"Bearer {{guestCredential}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/public/channels/{{publishableToken}}/guest-session"}},
+        {"name":"Resume guest session","request":{"auth":{"type":"noauth"},"method":"GET","header":[{"key":"Authorization","value":"Bearer {{guestCredential}}"}],"url":"{{baseUrl}}/public/channels/{{publishableToken}}/guest-session"}},
+        {"name":"List guest messages","request":{"auth":{"type":"noauth"},"method":"GET","header":[{"key":"Authorization","value":"Bearer {{guestCredential}}"}],"url":"{{baseUrl}}/public/channels/{{publishableToken}}/guest-session/messages?afterSequence={{guestAfterSequence}}&take=50"}},
+        {"name":"Send guest message or retry","request":{"auth":{"type":"noauth"},"method":"POST","header":[{"key":"Authorization","value":"Bearer {{guestCredential}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"clientMessageId\":\"{{guestClientMessageId}}\",\"content\":\"Hello, I need help.\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/public/channels/{{publishableToken}}/guest-session/messages"}},
+        {"name":"Revoke guest session","request":{"auth":{"type":"noauth"},"method":"DELETE","header":[{"key":"Authorization","value":"Bearer {{guestCredential}}"}],"url":"{{baseUrl}}/public/channels/{{publishableToken}}/guest-session"}}
+      ]
+    },
+    {
+      "name": "Conversations",
+      "item": [
+        {"name":"Create conversation","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"channelId\":\"{{channelId}}\",\"contactId\":\"{{contactId}}\",\"clientRequestId\":\"00000000-0000-0000-0000-000000000101\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations"}},
+        {"name":"List conversations","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations?take=50"}},
+        {"name":"Get conversation","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}"}},
+        {"name":"Append message","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"clientMessageId\":\"00000000-0000-0000-0000-000000000102\",\"content\":\"Hello\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/messages"}},
+        {"name":"List messages","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/messages?afterSequence=0&take=50"}},
+        {"name":"Set assignment (null unassigns)","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"assignedUserId\":\"{{userId}}\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/assignment"}},
+        {"name":"List assignment history","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/assignments?afterSequence=0&take=50"}},
+        {"name":"Request handoff","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"clientRequestId\":\"00000000-0000-0000-0000-000000000103\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/handoffs"}},
+        {"name":"List handoffs","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/handoffs?afterSequence=0&take=50"}},
+        {"name":"Accept handoff","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/handoffs/{{handoffId}}/accept"}},
+        {"name":"Resolve conversation","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/resolve"}},
+        {"name":"Reopen conversation","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/reopen"}}
+      ]
+    },
+    {
+      "name": "Knowledge sources and documents",
+      "item": [
+        {"name":"Create knowledge source (TEXT)","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"kind\":\"TEXT\",\"name\":\"FAQ\",\"textContent\":\"Example knowledge text.\",\"websiteUrl\":null}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources"}},
+        {"name":"List knowledge sources","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources?take=50"}},
+        {"name":"Get knowledge source","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}"}},
+        {"name":"Update knowledge source","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"FAQ\",\"enabled\":true,\"textContent\":\"Updated knowledge text.\",\"websiteUrl\":null}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}"}},
+        {"name":"Upload document (replace raw body with file content)","request":{"method":"POST","header":[{"key":"Content-Type","value":"text/plain"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"Example uploaded document content."},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents?fileName=example.txt&clientRequestId=00000000-0000-0000-0000-000000000104"}},
+        {"name":"Request source ingestion","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"clientRequestId\":\"00000000-0000-0000-0000-000000000105\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/ingestions"}},
+        {"name":"List documents","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents?take=50"}},
+        {"name":"Get document","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents/{{documentId}}"}},
+        {"name":"Retry document ingestion","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents/{{documentId}}/retry"}},
+        {"name":"Delete document","request":{"method":"DELETE","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents/{{documentId}}"}},
+        {"name":"List document chunks","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/knowledge-sources/{{sourceId}}/documents/{{documentId}}/chunks?afterSequence=0&take=50"}}
+      ]
+    },
+    {
+      "name": "AI agents and execution",
+      "item": [
+        {"name":"Create AI agent","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Support\",\"enabled\":true,\"instructions\":\"Be helpful and concise.\",\"language\":\"en\",\"modelTier\":\"BALANCED\",\"knowledgeScope\":\"ALL_SOURCES\",\"knowledgeSourceIds\":[],\"handoffOnRequest\":true,\"handoffWhenUnanswered\":true,\"maxAiReplies\":3}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents"}},
+        {"name":"List AI agents","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents?take=50"}},
+        {"name":"Get AI agent","request":{"method":"GET","header":[],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents/{{agentId}}"}},
+        {"name":"Replace AI agent","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"name\":\"Support\",\"enabled\":true,\"instructions\":\"Be helpful and concise.\",\"language\":\"en\",\"modelTier\":\"BALANCED\",\"knowledgeScope\":\"ALL_SOURCES\",\"knowledgeSourceIds\":[],\"handoffOnRequest\":true,\"handoffWhenUnanswered\":true,\"maxAiReplies\":3}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents/{{agentId}}"}},
+        {"name":"Preview AI retrieval","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"query\":\"How do I reset my password?\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents/{{agentId}}/retrieval-preview"}},
+        {"name":"Delete AI agent","request":{"method":"DELETE","header":[{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"url":"{{baseUrl}}/workspaces/{{workspaceId}}/ai-agents/{{agentId}}"}},
+        {"name":"Bind AI agent to conversation","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"agentId\":\"{{agentId}}\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/ai-agent"}},
+        {"name":"Execute AI for message","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{csrfToken}}"}],"body":{"mode":"raw","raw":"{\"messageId\":\"{{messageId}}\"}","options":{"raw":{"language":"json"}}},"url":"{{baseUrl}}/workspaces/{{workspaceId}}/conversations/{{conversationId}}/ai-executions"}}
+      ]
+    },
+    {
+      "name": "Operational and development routes",
+      "item": [
+        {"name":"Health check","request":{"method":"GET","header":[],"url":"{{baseUrl}}/health"}},
+        {"name":"OpenAPI document (development only)","request":{"method":"GET","header":[],"url":"{{baseUrl}}/openapi/v1.json"}},
+        {"name":"Scalar docs (always mapped)","request":{"method":"GET","header":[],"url":"{{baseUrl}}/scalar"}},
+        {"name":"Scalar docs (development only)","request":{"method":"GET","header":[],"url":"{{baseUrl}}/docs"}}
+      ]
+    }
+  ]
+}

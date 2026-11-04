@@ -1,0 +1,58 @@
+# Everything at repository root is ignored by default
+/*
+
+# Git/project configuration
+!/.gitignore
+!/.editorconfig
+!/.gitattributes
+
+# Application source
+!/backend/
+!/apps/
+
+# Deployment/source infrastructure
+!/infra/
+
+# Project documentation and agent configuration
+!/docs/
+!/.agents/
+!/.codex/
+!/AGENTS.md
+!/process.md
+!/README.md
+!/ENDPOINTS.md
+!/START_HERE.md
+!/CODEX_COMMANDS.md
+!/MANIFEST.txt
+!/recent.md
+!/.gitnexusignore
+!/.mcp.json
+!/.claude/
+
+# Agent execution memory
+!/memory/
+
+# Evals and helper scripts
+!/evals/
+!/scripts/
+
+# Still ignored (local tools, caches, temp): .tools/, .gitnexus/, .tmp/
+
+# Generated build and dependency output
+**/node_modules/
+**/.next/
+**/dist/
+**/bin/
+**/obj/
+**/TestResults/
+**/coverage/
+**/.vs/
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# Local development configuration
+**/appsettings.Development.json
+
+# CI/CD - ileride varsa
+!/.github/

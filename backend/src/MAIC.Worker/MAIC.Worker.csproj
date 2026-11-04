@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup><PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.20" /></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../MAIC.Application/MAIC.Application.csproj" />
+    <ProjectReference Include="../MAIC.Infrastructure/MAIC.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

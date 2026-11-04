@@ -1,0 +1,23 @@
+{
+  "id": "a248b2d2-2647-4570-9ea9-c2cb4a0304f6",
+  "name": "MAIC Local",
+  "values": [
+    {"key":"baseUrl","value":"https://localhost:5001","type":"default","enabled":true},
+    {"key":"workspaceId","value":"00000000-0000-0000-0000-000000000001","type":"default","enabled":true},
+    {"key":"userId","value":"00000000-0000-0000-0000-000000000002","type":"default","enabled":true},
+    {"key":"contactId","value":"00000000-0000-0000-0000-000000000003","type":"default","enabled":true},
+    {"key":"channelId","value":"00000000-0000-0000-0000-000000000004","type":"default","enabled":true},
+    {"key":"conversationId","value":"00000000-0000-0000-0000-000000000005","type":"default","enabled":true},
+    {"key":"messageId","value":"00000000-0000-0000-0000-000000000006","type":"default","enabled":true},
+    {"key":"handoffId","value":"00000000-0000-0000-0000-000000000007","type":"default","enabled":true},
+    {"key":"sourceId","value":"00000000-0000-0000-0000-000000000008","type":"default","enabled":true},
+    {"key":"documentId","value":"00000000-0000-0000-0000-000000000009","type":"default","enabled":true},
+    {"key":"agentId","value":"00000000-0000-0000-0000-000000000010","type":"default","enabled":true},
+    {"key":"invitationId","value":"00000000-0000-0000-0000-000000000011","type":"default","enabled":true},
+    {"key":"publishableToken","value":"replace-with-channel-token","type":"default","enabled":true},
+    {"key":"csrfToken","value":"replace-after-GET-auth-csrf","type":"default","enabled":true}
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_using": "MAIC",
+  "_postman_exported_at": "2026-10-07T00:00:00.000Z"
+}

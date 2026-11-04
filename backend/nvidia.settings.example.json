@@ -1,0 +1,33 @@
+{
+  "ApiKey": "",
+  "TextGeneration": {
+    "Provider": "OpenAICompatible",
+    "Endpoint": "https://integrate.api.nvidia.com/v1",
+    "FastModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+    "BalancedModel": "nvidia/nemotron-3-super-120b-a12b",
+    "QualityModel": "nvidia/nemotron-3-super-120b-a12b",
+    "TokenLimitParameter": "MaxTokens",
+    "EnableThinking": false,
+    "TimeoutSeconds": 120,
+    "MaxOutputTokens": 4096
+  },
+  "Embeddings": {
+    "Provider": "OpenAICompatible",
+    "Endpoint": "https://integrate.api.nvidia.com/v1",
+    "Model": "nvidia/nemotron-3-embed-1b",
+    "SpaceKey": "nvidia-nemotron3-embed1b-v1",
+    "Dimensions": 2048,
+    "SendDimensions": false,
+    "DocumentInputType": "passage",
+    "QueryInputType": "query",
+    "MaxBatchSize": 4,
+    "MaxInputLength": 4000,
+    "TimeoutSeconds": 60
+  },
+  "AiExecution": {
+    "ExecutionTimeoutSeconds": 240,
+    "Fast": { "InputPerMillionTokens": 0, "OutputPerMillionTokens": 0 },
+    "Balanced": { "InputPerMillionTokens": 0, "OutputPerMillionTokens": 0 },
+    "Quality": { "InputPerMillionTokens": 0, "OutputPerMillionTokens": 0 }
+  }
+}

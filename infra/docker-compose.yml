@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.1-pg17
+    environment:
+      POSTGRES_DB: maic
+      POSTGRES_USER: maic
+      POSTGRES_PASSWORD: maic_local_only
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maic -d maic"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - maic_pgdata:/var/lib/postgresql/data
+volumes:
+  maic_pgdata:
